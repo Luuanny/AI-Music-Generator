@@ -192,7 +192,7 @@ export default function MusicPlayer({ track, isPlaying, onPlayPause }: MusicPlay
                   onClick={() => setIsExpanded(false)}
                   className="text-white/60 hover:text-white transition-colors"
                 >
-                  <Maximize2 className="h-6 w-6 rotate-45" />
+                  <span className="h-6 w-6 inline-block transform rotate-45"><Maximize2Icon /></span>
                 </button>
               </div>
 
