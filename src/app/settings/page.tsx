@@ -401,7 +401,7 @@ export default function SettingsPage() {
                           : 'text-white/70 hover:text-white hover:bg-white/10'
                       }`}
                     >
-                      <Icon className="h-5 w-5" />
+                      <span className="h-5 w-5 inline-block"><Icon /></span>
                       <span>{tab.label}</span>
                     </button>
                   )
