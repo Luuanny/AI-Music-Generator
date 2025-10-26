@@ -12,6 +12,10 @@
 # next.js
 /.next/
 /out/
+.next/
+.next/**
+*/.next/*
+*.next
 
 # production
 /build
@@ -35,7 +39,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# node.js
-/node_modules
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
-/github
+# OS
+Thumbs.db
+
+# Build artifacts
+.cache/
