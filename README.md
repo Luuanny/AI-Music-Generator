@@ -17,7 +17,8 @@
 - **语言**: TypeScript
 - **样式**: Tailwind CSS
 - **动画**: Framer Motion
-- **图标**: Lucide React
+- **AI API**: Stability AI Stable Audio
+- **部署**: Vercel / GitHub Pages
 
 ## 快速开始
 
@@ -49,6 +50,34 @@ pnpm dev
 npm run build
 npm start
 ```
+
+## API配置
+
+### Stability AI配置
+
+1. **获取API密钥**
+   - 访问 [Stability AI Platform](https://platform.stability.ai/)
+   - 注册账号并获取API密钥
+
+2. **配置环境变量**
+   ```bash
+   # 复制示例环境变量文件
+   cp env.example .env.local
+   
+   # 编辑.env.local文件，添加你的API密钥
+   STABILITY_API_KEY=your_api_key_here
+   ```
+
+3. **测试API连接**
+   ```bash
+   npm run dev
+   # 访问 http://localhost:3000
+   # 尝试生成一首音乐
+   ```
+
+### 演示模式
+
+如果没有配置API密钥，项目会运行在演示模式，使用模拟的音乐生成过程。
 
 ## 项目结构
 
@@ -136,6 +165,37 @@ colors: {
 
 3. **访问网站**
    - 部署完成后，网站将在 `https://你的用户名.github.io/ai-music-generator` 访问
+
+## SEO优化
+
+项目已经内置了完整的SEO优化配置：
+
+- ✅ 完整的元数据标签（Open Graph, Twitter Cards）
+- ✅ 响应式设计支持移动端
+- ✅ 语义化HTML结构
+- ✅ 结构化数据支持
+- ✅ robots.txt配置
+- ✅ sitemap.xml自动生成
+- ✅ 多语言支持
+
+### SEO最佳实践
+
+1. **关键词优化**
+   - AI音乐生成器
+   - Stability AI
+   - 人工智能音乐创作
+   - 免费音乐生成工具
+
+2. **性能优化**
+   - 静态站点导出
+   - 图片优化
+   - 代码分割
+   - CDN加速
+
+3. **移动端优化**
+   - 响应式设计
+   - PWA支持
+   - 触摸优化
 
 ## 贡献
 
