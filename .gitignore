@@ -33,6 +33,8 @@ yarn-error.log*
 .env
 .env.local
 .env*.local
+# 但允许 env.production 用于配置示例
+!.env.production
 
 # vercel
 .vercel
