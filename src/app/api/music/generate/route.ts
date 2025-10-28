@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
     // 生成音乐数据
     const musicData = {
       id: Date.now().toString(),
-      title: `AI生成的音乐 - ${new Date().toLocaleTimeString()}`,
+      title: `${prompt} - ${duration || DEFAULT_DURATION}秒`,
       description: prompt,
       duration: `${duration || DEFAULT_DURATION}秒`,
       genre: genre || '混合',
