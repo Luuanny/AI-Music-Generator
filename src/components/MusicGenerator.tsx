@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { downloadMusic, shareMusic } from '@/utils/music'
 // 使用简单的文本图标来避免lucide-react的问题
 const Wand2Icon = () => <span className="text-lg">🪄</span>
 const MusicIcon = () => <span className="text-lg">🎵</span>
@@ -247,6 +248,12 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                const player = document.querySelector('audio')
+                if (player) {
+                  player.play().catch(console.error)
+                }
+              }}
               className="btn-primary flex items-center space-x-2"
             >
               <MusicIcon />
@@ -256,6 +263,7 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => downloadMusic(generatedTrack)}
               className="btn-secondary flex items-center space-x-2"
             >
               <DownloadIcon />
@@ -265,6 +273,7 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => shareMusic(generatedTrack)}
               className="btn-secondary flex items-center space-x-2"
             >
               <Share2Icon />
@@ -274,6 +283,9 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                alert('收藏功能即将推出！')
+              }}
               className="btn-secondary flex items-center space-x-2"
             >
               <HeartIcon />

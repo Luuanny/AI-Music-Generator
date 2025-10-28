@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { downloadMusic, shareMusic } from '@/utils/music'
 // 使用简单的文本图标来避免lucide-react的问题
 const PlayIcon = () => <span className="text-lg">▶️</span>
 const PauseIcon = () => <span className="text-lg">⏸️</span>
@@ -276,17 +277,26 @@ export default function MusicPlayer({ track, isPlaying, onPlayPause }: MusicPlay
 
               {/* Action Buttons */}
               <div className="flex justify-center space-x-4">
-                <button className="btn-secondary flex items-center space-x-2">
+                <button 
+                  onClick={() => alert('收藏功能即将推出！')}
+                  className="btn-secondary flex items-center space-x-2"
+                >
                   <HeartIcon />
                   <span>收藏</span>
                 </button>
                 
-                <button className="btn-secondary flex items-center space-x-2">
+                <button 
+                  onClick={() => shareMusic(track)}
+                  className="btn-secondary flex items-center space-x-2"
+                >
                   <Share2Icon />
                   <span>分享</span>
                 </button>
                 
-                <button className="btn-secondary flex items-center space-x-2">
+                <button 
+                  onClick={() => downloadMusic(track)}
+                  className="btn-secondary flex items-center space-x-2"
+                >
                   <DownloadIcon />
                   <span>下载</span>
                 </button>
