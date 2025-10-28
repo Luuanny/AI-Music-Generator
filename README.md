@@ -17,7 +17,7 @@
 - **语言**: TypeScript
 - **样式**: Tailwind CSS
 - **动画**: Framer Motion
-- **AI API**: Lyria (Google Vertex AI)
+- **AI API**: Suno AI
 - **部署**: Vercel / GitHub Pages
 
 ## 快速开始
@@ -53,35 +53,23 @@ npm start
 
 ## API配置
 
-### Lyria (Google Vertex AI) 配置
+### Suno AI 配置
 
-1. **获取Google Cloud凭证**
-   - 访问 [Google Cloud Console](https://console.cloud.google.com/)
-   - 创建新项目或选择现有项目
-   - 启用 Vertex AI API
-   - 创建服务账号并下载JSON密钥文件
+1. **获取Suno API密钥**
+   - 访问 [Suno AI](https://suno.ai)
+   - 注册账号并获取API密钥
+   - 获取API密钥：https://suno.ai/api
 
 2. **配置环境变量**
    ```bash
    # 复制示例环境变量文件
    cp env.example .env.local
    
-   # 编辑.env.local文件，添加你的配置
-   GOOGLE_CLOUD_PROJECT_ID=your-project-id
-   GOOGLE_CLOUD_LOCATION=us-central1
-   GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account-key.json
-   
-   # 或者使用API密钥（备用方案）
-   LYRIA_API_KEY=your_api_key_here
+   # 编辑.env.local文件，添加你的API密钥
+   SUNO_API_KEY=your_suno_api_key_here
    ```
 
-3. **安装可选依赖**
-   ```bash
-   # 如果需要使用Google Cloud SDK
-   npm install @google-cloud/aiplatform
-   ```
-
-4. **测试API连接**
+3. **测试API连接**
    ```bash
    npm run dev
    # 访问 http://localhost:3000
@@ -90,12 +78,12 @@ npm start
 
 ### 演示模式
 
-如果没有配置Lyria API，项目会运行在演示模式，使用模拟的音乐生成过程。
+如果没有配置Suno API，项目会运行在演示模式，使用模拟的音乐生成过程。
 
 ### 获取帮助
-- [Google Cloud文档](https://cloud.google.com/docs)
-- [Vertex AI文档](https://cloud.google.com/vertex-ai/docs)
-- [Lyria模型文档](https://cloud.google.com/vertex-ai/docs)
+- [Suno AI官网](https://suno.ai)
+- [Suno API文档](https://suno.ai/docs)
+- [Suno API密钥](https://suno.ai/api)
 
 ## 项目结构
 
@@ -200,8 +188,7 @@ colors: {
 
 1. **关键词优化**
    - AI音乐生成器
-   - Lyria AI
-   - Google Vertex AI
+   - Suno AI
    - 人工智能音乐创作
    - 免费音乐生成工具
 

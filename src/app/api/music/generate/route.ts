@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Lyria (Google Vertex AI) 音乐生成配置
-const LYRIA_ENDPOINT_BASE = 'https://us-central1-aiplatform.googleapis.com/v1'
-const API_TIMEOUT = 60000 // 60秒
+// Suno API 音乐生成配置
+const SUNO_API_BASE_URL = 'https://api.suno.ai/api/v1'
+const API_TIMEOUT = 120000 // 120秒（Suno可能需要更长时间）
 const DEFAULT_DURATION = 30 // 默认30秒
 
 // 音乐风格的提示词映射
@@ -72,61 +72,54 @@ export async function POST(request: NextRequest) {
     }
 
     // 获取配置
-    const projectId = process.env.GOOGLE_CLOUD_PROJECT_ID
-    const location = process.env.GOOGLE_CLOUD_LOCATION || 'us-central1'
-    const apiKey = process.env.LYRIA_API_KEY
-    
+    const apiKey = process.env.SUNO_API_KEY
     let musicUrl = null
     let generationStatus = 'demo'
 
-    // 如果有配置，尝试调用Lyria API
-    if ((projectId || apiKey) && apiKey !== 'your_lyria_api_key_here') {
+    // 如果有配置，尝试调用Suno API
+    if (apiKey && apiKey !== 'your_suno_api_key_here') {
       try {
         const audioDuration = duration ? parseInt(duration) : DEFAULT_DURATION
         const durationSeconds = Math.min(Math.max(audioDuration, 5), 300)
         
-        // 构建Lyria API请求
-        const lyriaEndpoint = projectId 
-          ? `${LYRIA_ENDPOINT_BASE}/projects/${projectId}/locations/${location}/publishers/google/models/lyria-002:predict`
-          : `https://generativelanguage.googleapis.com/v1beta/models/lyria:generateMusic`
+        // 构建Suno API请求
+        const sunoEndpoint = `${SUNO_API_BASE_URL}/song`
 
         const requestBody = {
-          instances: [{
-            prompt: enhancedPrompt,
-            negative_prompt: '',
-            seed: Math.floor(Math.random() * 100000),
-            duration: durationSeconds
-          }],
-          parameters: {
-            sampleCount: 1,
-            temperature: 0.8
-          }
+          prompt: enhancedPrompt,
+          duration: durationSeconds,
+          instrumental: false,
+          custom_mode: false,
+          model: 'v3'
         }
 
-        const lyriaResponse = await fetch(lyriaEndpoint, {
+        const sunoResponse = await fetch(sunoEndpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': apiKey ? `Bearer ${apiKey}` : '',
-            ...(projectId ? {} : {
-              'x-goog-api-key': apiKey || ''
-            })
+            'Authorization': `Bearer ${apiKey}`,
           },
           body: JSON.stringify(requestBody),
           signal: AbortSignal.timeout(API_TIMEOUT)
         })
 
-        if (lyriaResponse.ok) {
-          const data = await lyriaResponse.json()
-          musicUrl = data.predictions?.[0]?.audioContent || data.audioContent
-          generationStatus = 'real'
+        if (sunoResponse.ok) {
+          const data = await sunoResponse.json()
+          
+          // Suno API返回格式可能包含音频URL或ID
+          // 根据实际Suno API响应格式调整
+          musicUrl = data.audio_url || data.mp3_url || data.url
+          
+          if (musicUrl) {
+            generationStatus = 'real'
+          }
         } else {
-          const errorData = await lyriaResponse.json().catch(() => ({}))
-          console.error('Lyria API error:', errorData)
+          const errorData = await sunoResponse.json().catch(() => ({}))
+          console.error('Suno API error:', sunoResponse.status, errorData)
           // 降级到演示模式
         }
       } catch (apiError) {
-        console.error('Lyria API call failed:', apiError)
+        console.error('Suno API call failed:', apiError)
         // 降级到演示模式
       }
     }
@@ -145,7 +138,7 @@ export async function POST(request: NextRequest) {
       progress: 100,
       generationType: generationStatus,
       prompt: enhancedPrompt,
-      api: 'lyria'
+      api: 'suno'
     }
 
     return NextResponse.json({
@@ -153,7 +146,7 @@ export async function POST(request: NextRequest) {
       data: musicData,
       message: generationStatus === 'real' 
         ? '音乐生成完成！' 
-        : '演示模式：未配置Lyria API密钥'
+        : '演示模式：未配置Suno API密钥'
     })
     
   } catch (error) {
@@ -172,11 +165,11 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   return NextResponse.json({
     message: 'AI音乐生成API',
-    version: '2.0.0',
+    version: '3.0.0',
     api: {
-      name: 'Lyria (Google Vertex AI)',
-      provider: 'Google',
-      status: process.env.GOOGLE_CLOUD_PROJECT_ID || process.env.LYRIA_API_KEY ? 'configured' : 'demo',
+      name: 'Suno AI',
+      provider: 'Suno',
+      status: process.env.SUNO_API_KEY ? 'configured' : 'demo',
       endpoints: {
         generate: 'POST /api/music/generate',
         status: 'GET /api/music/status/:id'
@@ -189,9 +182,9 @@ export async function GET() {
       duration: '音乐时长（可选，默认30秒）'
     },
     setup: {
-      google_cloud: 'https://console.cloud.google.com/',
-      vertex_ai: 'https://cloud.google.com/vertex-ai',
-      documentation: 'https://cloud.google.com/vertex-ai/docs'
+      suno_api: 'https://suno.ai',
+      documentation: 'https://suno.ai/docs',
+      get_api_key: 'https://suno.ai/api'
     }
   })
 }

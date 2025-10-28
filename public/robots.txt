@@ -5,3 +5,4 @@ Disallow: /api/
 
 # Sitemap
 Sitemap: https://ai-music-generator.vercel.app/sitemap.xml
+

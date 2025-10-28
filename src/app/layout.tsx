@@ -7,15 +7,15 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'AI音乐生成器 - 使用Lyria AI创造专业音乐',
+    default: 'AI音乐生成器 - 使用Suno AI创造专业音乐',
     template: '%s | AI音乐生成器'
   },
-  description: '使用Lyria (Google Vertex AI)技术生成独特的音乐作品，支持流行、摇滚、电子、古典等多种风格和情感表达。免费AI音乐创作工具，一键生成专业级音乐。',
+  description: '使用Suno AI技术生成独特的音乐作品，支持流行、摇滚、电子、古典等多种风格和情感表达。免费AI音乐创作工具，一键生成专业级音乐。',
   keywords: [
     'AI音乐生成器',
     'AI音乐生成',
-    'Lyria',
-    'Google Vertex AI',
+    'Suno AI',
+    'AI音乐创作',
     '人工智能音乐',
     '音乐创作工具',
     '免费音乐生成',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     url: 'https://ai-music-generator.vercel.app',
     siteName: 'AI音乐生成器',
     title: 'AI音乐生成器 - 使用Lyria AI创造专业音乐',
-    description: '使用Lyria (Google Vertex AI)技术生成独特的音乐作品，支持多种风格和情感表达',
+    description: '使用Suno AI技术生成独特的音乐作品，支持多种风格和情感表达',
     images: [
       {
         url: '/og-image.png',
