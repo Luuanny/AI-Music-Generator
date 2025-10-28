@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
       duration: `${duration || DEFAULT_DURATION}秒`,
       genre: genre || '混合',
       mood: mood || '中性',
-      url: musicUrl || '/api/music/demo.mp3',
+      url: musicUrl || `/api/music/demo?duration=${duration || DEFAULT_DURATION}`,
       createdAt: new Date().toISOString(),
       status: 'completed',
       progress: 100,

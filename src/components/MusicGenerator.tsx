@@ -58,7 +58,7 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
       duration: `${selectedDuration}秒`,
       genre: selectedGenre || '混合',
       mood: selectedMood || '中性',
-      url: '/api/music/sample.mp3', // 模拟音频文件
+      url: `/api/music/demo?duration=${selectedDuration}`, // 演示音频文件
       createdAt: new Date().toISOString(),
     }
 
