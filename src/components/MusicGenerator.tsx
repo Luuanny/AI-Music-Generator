@@ -63,29 +63,50 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
         }),
       })
 
+      // 检查响应状态
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('HTTP error:', response.status, errorText)
+        alert(`音乐生成失败：HTTP ${response.status}`)
+        return
+      }
+
+      // 检查响应是否有内容
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Invalid content type:', contentType)
+        alert('音乐生成失败：服务器返回了非JSON响应')
+        return
+      }
+
       const result = await response.json()
 
       if (result.success && result.data) {
         const newTrack: Track = result.data
 
         // 保存到作品集
-        await fetch('/api/music/storage', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            ...newTrack,
-            likes: 0,
-            downloads: 0,
-          }),
-        })
+        try {
+          await fetch('/api/music/storage', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              ...newTrack,
+              likes: 0,
+              downloads: 0,
+            }),
+          })
+        } catch (saveError) {
+          console.error('Failed to save to gallery:', saveError)
+          // 即使保存失败，也继续显示生成的音乐
+        }
 
         setGeneratedTrack(newTrack)
         onTrackGenerated(newTrack)
       } else {
         console.error('Music generation failed:', result.error)
-        alert('音乐生成失败：' + (result.message || '请稍后重试'))
+        alert('音乐生成失败：' + (result.message || result.error || '请稍后重试'))
       }
     } catch (error) {
       console.error('Generate music error:', error)
