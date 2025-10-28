@@ -99,11 +99,11 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
               <select
                 value={selectedGenre}
                 onChange={(e) => setSelectedGenre(e.target.value)}
-                className="input-field"
+                className="input-field appearance-none bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
-                <option value="">选择风格（可选）</option>
+                <option value="" className="bg-slate-800 text-white">选择风格（可选）</option>
                 {genres.map(genre => (
-                  <option key={genre} value={genre}>{genre}</option>
+                  <option key={genre} value={genre} className="bg-slate-800 text-white">{genre}</option>
                 ))}
               </select>
             </div>
@@ -114,11 +114,11 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
               <select
                 value={selectedMood}
                 onChange={(e) => setSelectedMood(e.target.value)}
-                className="input-field"
+                className="input-field appearance-none bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
-                <option value="">选择情感（可选）</option>
+                <option value="" className="bg-slate-800 text-white">选择情感（可选）</option>
                 {moods.map(mood => (
-                  <option key={mood} value={mood}>{mood}</option>
+                  <option key={mood} value={mood} className="bg-slate-800 text-white">{mood}</option>
                 ))}
               </select>
             </div>
@@ -129,10 +129,10 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
               <select
                 value={selectedDuration}
                 onChange={(e) => setSelectedDuration(e.target.value)}
-                className="input-field"
+                className="input-field appearance-none bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
                 {durations.map(duration => (
-                  <option key={duration} value={duration}>{duration}秒</option>
+                  <option key={duration} value={duration} className="bg-slate-800 text-white">{duration}秒</option>
                 ))}
               </select>
             </div>
