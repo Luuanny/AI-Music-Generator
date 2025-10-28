@@ -1,3 +1,14 @@
+interface Track {
+  id: string
+  title: string
+  description: string
+  duration: string
+  genre: string
+  mood: string
+  url: string
+  createdAt: string
+}
+
 // 下载音乐文件的工具函数
 export async function downloadMusic(track: Track) {
   try {

@@ -6,9 +6,10 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  experimental: {
-    appDir: true,
-  },
+  // 移除已弃用的配置
+  // experimental: {
+  //   appDir: true,
+  // },
 }
 
 module.exports = nextConfig
