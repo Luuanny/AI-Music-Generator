@@ -48,23 +48,51 @@ export default function MusicGenerator({ onTrackGenerated }: MusicGeneratorProps
 
     setIsGenerating(true)
     
-    // 模拟AI音乐生成过程
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    try {
+      // 调用音乐生成API
+      const response = await fetch('/api/music/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt,
+          genre: selectedGenre,
+          mood: selectedMood,
+          duration: selectedDuration,
+        }),
+      })
 
-    const newTrack: Track = {
-      id: Date.now().toString(),
-      title: `AI生成的音乐 - ${new Date().toLocaleTimeString()}`,
-      description: prompt,
-      duration: `${selectedDuration}秒`,
-      genre: selectedGenre || '混合',
-      mood: selectedMood || '中性',
-      url: `/api/music/demo?duration=${selectedDuration}`, // 演示音频文件
-      createdAt: new Date().toISOString(),
+      const result = await response.json()
+
+      if (result.success && result.data) {
+        const newTrack: Track = result.data
+
+        // 保存到作品集
+        await fetch('/api/music/storage', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...newTrack,
+            likes: 0,
+            downloads: 0,
+          }),
+        })
+
+        setGeneratedTrack(newTrack)
+        onTrackGenerated(newTrack)
+      } else {
+        console.error('Music generation failed:', result.error)
+        alert('音乐生成失败：' + (result.message || '请稍后重试'))
+      }
+    } catch (error) {
+      console.error('Generate music error:', error)
+      alert('音乐生成失败：' + (error instanceof Error ? error.message : '未知错误'))
+    } finally {
+      setIsGenerating(false)
     }
-
-    setGeneratedTrack(newTrack)
-    onTrackGenerated(newTrack)
-    setIsGenerating(false)
   }
 
   return (

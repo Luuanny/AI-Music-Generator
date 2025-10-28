@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 // 使用简单的文本图标来避免lucide-react的问题
 const MusicIcon = () => <span className="text-lg">🎵</span>
@@ -35,82 +35,32 @@ export default function GalleryPage() {
   const [selectedMood, setSelectedMood] = useState('')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [playingTrack, setPlayingTrack] = useState<string | null>(null)
+  const [tracks, setTracks] = useState<Track[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  // 模拟音乐数据
-  const tracks: Track[] = [
-    {
-      id: '1',
-      title: '梦幻电子之旅',
-      description: '一首充满未来感的电子音乐，适合夜晚独处时聆听',
-      duration: '3:45',
-      genre: '电子',
-      mood: '梦幻',
-      url: '/api/music/sample1.mp3',
-      createdAt: '2024-01-15',
-      likes: 128,
-      downloads: 45,
-    },
-    {
-      id: '2',
-      title: '温暖民谣',
-      description: '轻柔的吉他旋律，带给你内心的平静与温暖',
-      duration: '4:12',
-      genre: '民谣',
-      mood: '温柔',
-      url: '/api/music/sample2.mp3',
-      createdAt: '2024-01-14',
-      likes: 89,
-      downloads: 32,
-    },
-    {
-      id: '3',
-      title: '激情摇滚',
-      description: '充满力量的摇滚音乐，激发你的斗志',
-      duration: '3:28',
-      genre: '摇滚',
-      mood: '激动',
-      url: '/api/music/sample3.mp3',
-      createdAt: '2024-01-13',
-      likes: 156,
-      downloads: 67,
-    },
-    {
-      id: '4',
-      title: '爵士之夜',
-      description: '优雅的爵士乐，适合在咖啡厅或酒吧中欣赏',
-      duration: '5:33',
-      genre: '爵士',
-      mood: '浪漫',
-      url: '/api/music/sample4.mp3',
-      createdAt: '2024-01-12',
-      likes: 203,
-      downloads: 89,
-    },
-    {
-      id: '5',
-      title: '古典交响',
-      description: '宏伟的古典音乐，展现音乐的庄严与美丽',
-      duration: '6:15',
-      genre: '古典',
-      mood: '庄严',
-      url: '/api/music/sample5.mp3',
-      createdAt: '2024-01-11',
-      likes: 178,
-      downloads: 54,
-    },
-    {
-      id: '6',
-      title: '流行节拍',
-      description: '轻快的流行音乐，让人忍不住跟着节拍摇摆',
-      duration: '3:20',
-      genre: '流行',
-      mood: '快乐',
-      url: '/api/music/sample6.mp3',
-      createdAt: '2024-01-10',
-      likes: 145,
-      downloads: 78,
-    },
-  ]
+  // 从API加载音乐作品
+  useEffect(() => {
+    const loadTracks = async () => {
+      try {
+        const response = await fetch('/api/music/storage')
+        const result = await response.json()
+        
+        if (result.success && result.data) {
+          setTracks(result.data)
+        }
+      } catch (error) {
+        console.error('Failed to load tracks:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadTracks()
+
+    // 定期刷新（每10秒）
+    const interval = setInterval(loadTracks, 10000)
+    return () => clearInterval(interval)
+  }, [])
 
   const genres = ['全部', '电子', '民谣', '摇滚', '爵士', '古典', '流行']
   const moods = ['全部', '梦幻', '温柔', '激动', '浪漫', '庄严', '快乐']
@@ -376,8 +326,16 @@ export default function GalleryPage() {
           </div>
         )}
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="text-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+            <p className="text-white/60">加载音乐作品...</p>
+          </div>
+        )}
+
         {/* Empty State */}
-        {filteredTracks.length === 0 && (
+        {!isLoading && filteredTracks.length === 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -386,8 +344,14 @@ export default function GalleryPage() {
             <div className="text-6xl text-white/40 mx-auto mb-4">
               <MusicIcon />
             </div>
-            <h3 className="text-xl font-semibold text-white/60 mb-2">没有找到音乐作品</h3>
-            <p className="text-white/40">尝试调整搜索条件或筛选器</p>
+            <h3 className="text-xl font-semibold text-white/60 mb-2">
+              {tracks.length === 0 ? '作品集为空' : '没有找到音乐作品'}
+            </h3>
+            <p className="text-white/40">
+              {tracks.length === 0 
+                ? '前往首页生成你的第一首AI音乐作品' 
+                : '尝试调整搜索条件或筛选器'}
+            </p>
           </motion.div>
         )}
       </div>
