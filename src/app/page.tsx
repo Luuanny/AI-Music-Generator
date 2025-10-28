@@ -22,6 +22,19 @@ export default function HomePage() {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
 
+  // 滚动到音乐生成器部分
+  const scrollToGenerator = () => {
+    const element = document.getElementById('music-generator')
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  // 跳转到作品集页面
+  const goToGallery = () => {
+    window.location.href = '/gallery'
+  }
+
   return (
     <div className="pt-16">
       {/* Hero Section */}
@@ -57,6 +70,7 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={scrollToGenerator}
                 className="btn-primary text-lg px-8 py-4"
               >
                 开始创作
@@ -65,6 +79,7 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={goToGallery}
                 className="btn-secondary text-lg px-8 py-4"
               >
                 查看作品集
@@ -100,7 +115,7 @@ export default function HomePage() {
       </section>
 
       {/* Music Generator Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="music-generator" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
